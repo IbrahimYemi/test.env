@@ -24,30 +24,33 @@ export default function Login() {
     // set onSubmit
     const handleAppUi = async (e) => {
         e.preventDefault()
-        // try {
-        //     const response = await axios.post("https://ctp.latechsolution.com.ng/api/login",
-        //         // JSON.stringify({ "bodymsg"}),
-        //         {
-        //             headers: {
-        //                 'Content-Type': 'application/json'
-        //             },
-        //             withCredentials: true
-        //         }
-        //     );
-        //     console.log(JSON.stringify(response));
-        //     const accessToken = response?.data.accessToken;
-        //     setInput({
-        //         meterNumber: '',
-        //         password: '',
-        //     })
-        // } catch (error) {
-        //     console.log(error)
-        // }
         console.log(input)
         setInput({
             AccountNo: '',
             password: '',
         })
+        try {
+            const response = await axios.post("https://ctp.latechsolution.com.ng/api/login",
+                JSON.stringify({
+                    AccountNo: input.AccountNo,
+                    password: input.password,
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    withCredentials: true
+                }
+            );
+            console.log(JSON.stringify(response));
+            // const accessToken = response?.data.accessToken;
+            setInput({
+                meterNumber: '',
+                password: '',
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
@@ -57,7 +60,7 @@ export default function Login() {
                 <h1 className="text-3xl font-semibold text-center text-purple-700 underline">
                    Sign in
                 </h1>
-                <form className="mt-6">
+                <form className="mt-6" onSubmit={handleAppUi} >
                     <div className="mb-2">
                         <label
                             className="block text-sm font-semibold text-gray-800"
@@ -85,7 +88,7 @@ export default function Login() {
                         />
                     </div>
                     <a
-                        href="#"
+                        href="#das"
                         className="text-xs text-purple-600 hover:underline"
                     >
                         Forget Password?
@@ -101,7 +104,7 @@ export default function Login() {
                     {" "}
                     Don't have an account?{" "}
                     <a
-                        href="#"
+                        href="#das"
                         className="font-medium text-purple-600 hover:underline"
                     >
                         Sign up
