@@ -5,8 +5,8 @@ export default function Login() {
 
     // collecting form input
     const [input, setInput] = useState({
-        AccountNo: "21225558582",
-        password: "123456"
+        AccountNo:"saw@gmail.com",
+        password: "saw12345",
     })
     // handle form input
     const handleChange = (e) => {
@@ -20,34 +20,29 @@ export default function Login() {
         })
     }
 
+    const http = axios.create({
+        baseURL: 'http://127.0.0.1:8000/',
+        headers: {
+            'X-Requested-With':'XMLHttpRequest',
+        },
+        withCredentials: true
+    });
+
 
     // set onSubmit
     const handleAppUi = async (e) => {
         e.preventDefault()
-        console.log(input)
-        setInput({
-            AccountNo: '',
-            password: '',
-        })
+        const csrf = await http.get('/sanctum/csrf-cookie')
+        console.log('csrf=', csrf);
         try {
-            const response = await axios.post("https://ctp.latechsolution.com.ng/api/login",
+            const response = await http.post("api/login",
                 JSON.stringify({
-                    AccountNo: input.AccountNo,
+                    email: input.AccountNo,
                     password: input.password,
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    withCredentials: true
-                }
+                })
             );
             console.log(JSON.stringify(response));
             // const accessToken = response?.data.accessToken;
-            setInput({
-                meterNumber: '',
-                password: '',
-            })
         } catch (error) {
             console.log(error)
         }
@@ -68,7 +63,7 @@ export default function Login() {
                             Email
                         </label>
                         <input
-                            type="number"
+                            type="email"
                             value={input.AccountNo}
                             onChange={handleChange}
                             className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
